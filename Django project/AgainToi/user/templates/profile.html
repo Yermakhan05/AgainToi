@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>User Profile</h1>
+
+    <h2>Your Information</h2>
+    <!-- Обновление профиля должно отправляться на правильный URL -->
+    <form method="POST" action="{% url 'user-profile' user.id %}">
+        {% csrf_token %}
+
+        <label for="phone">Phone:</label><br>
+        <input type="text" id="phone" name="phone" value="{{ user_profile.phone }}" required><br><br>
+
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address" value="{{ user_profile.address }}" required><br><br>
+
+        <button type="submit">Update Profile</button>
+    </form>
+
+    <h2>Your Details</h2>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+
+    <h2>Logout</h2>
+    <!-- Маршрут выхода из системы нужно скорректировать -->
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+</body>
+</html>
