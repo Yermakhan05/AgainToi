@@ -1,4 +1,0 @@
-urlpatterns = [
-    #Bereket chert
-
-]
