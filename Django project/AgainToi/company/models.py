@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from users.models import UserOrder
+from user.models import UserOrder
 
 
 class CompanyProfile(models.Model):
