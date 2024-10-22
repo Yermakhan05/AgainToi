@@ -2,7 +2,7 @@ from django.db import models
 
 from django.db import models
 from django.contrib.auth.models import User
-from user.models import UserOrder
+from users.models import UserOrder
 
 
 class Host(models.Model):
