@@ -33,3 +33,36 @@ class ShowCompanyRegistrationForm(UserCreationForm):
                 singer=self.cleaned_data['singer']
             )
         return user
+
+
+
+
+class HostForm(forms.ModelForm):
+    class Meta:
+        model = Host
+        fields = ['name', 'contact_info']
+
+class PhotographerForm(forms.ModelForm):
+    class Meta:
+        model = Photographer
+        fields = ['name', 'contact_info']
+
+class CameraOperatorForm(forms.ModelForm):
+    class Meta:
+        model = CameraOperator
+        fields = ['name', 'contact_info']
+
+class DancerForm(forms.ModelForm):
+    class Meta:
+        model = Dancer
+        fields = ['name', 'contact_info']
+
+class SingerForm(forms.ModelForm):
+    class Meta:
+        model = Singer
+        fields = ['name', 'contact_info']
+
+class ShowProfileForm(forms.ModelForm):
+    class Meta:
+        model = ShowProfile
+        fields = ['show_name', 'host', 'photographer', 'camera_operator', 'dancer', 'singer']

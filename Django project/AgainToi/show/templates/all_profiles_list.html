@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Все профили</title>
+</head>
+<body>
+    <h1>Список всех профилей</h1>
+
+    <h2>Тамада</h2>
+    <ul>
+        {% for host in hosts %}
+            <li>{{ host.name }} - {{ host.contact_info }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Фотографы</h2>
+    <ul>
+        {% for photographer in photographers %}
+            <li>{{ photographer.name }} - {{ photographer.contact_info }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Операторы</h2>
+    <ul>
+        {% for camera_operator in camera_operators %}
+            <li>{{ camera_operator.name }} - {{ camera_operator.contact_info }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Танцоры</h2>
+    <ul>
+        {% for dancer in dancers %}
+            <li>{{ dancer.name }} - {{ dancer.contact_info }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Певцы</h2>
+    <ul>
+        {% for singer in singers %}
+            <li>{{ singer.name }} - {{ singer.contact_info }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'add_host' %}">Добавить Тамаду</a>
+    <a href="{% url 'add_photographer' %}">Добавить Фотографа</a>
+    <a href="{% url 'add_camera_operator' %}">Добавить Оператора</a>
+    <a href="{% url 'add_dancer' %}">Добавить Танцора</a>
+    <a href="{% url 'add_singer' %}">Добавить Певца</a>
+    <a href="{% url 'add_show_profile' %}">Создать Шоу-Профиль</a>
+</body>
+</html>

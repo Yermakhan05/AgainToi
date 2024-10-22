@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     #own
     # 'company',
     # 'main',
-    # 'show',
-    # 'users'
+    'show',
+    'users',
     'home'
 
 ]
