@@ -82,51 +82,51 @@ class LogoutView(APIView):
 
 
 
-# class UserProfileView(APIView):
-#     def get(self, request, user_id):
-#         token = request.COOKIES.get('jwt')
-#
-#         if not token:
-#             raise AuthenticationFailed('Unauthenticated')
-#
-#         try:
-#             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-#         except jwt.ExpiredSignatureError:
-#             raise AuthenticationFailed('Unauthenticated')
-#         except jwt.InvalidTokenError:
-#             raise AuthenticationFailed('Invalid token')
-#
-#         if payload['id'] != user_id:
-#             raise AuthenticationFailed('Invalid user')
-#
-#         user = User.objects.get(id=user_id)
-#         user_profile = UserProfile.objects.get(user=user)
-#
-#         # Передача данных в шаблон
-#         context = {
-#             'user': user,
-#             'user_profile': user_profile
-#         }
-#         return render(request, 'profile.html', context)
-#
-#     def post(self, request, user_id):
-#         token = request.COOKIES.get('jwt')
-#
-#         if not token:
-#             raise AuthenticationFailed('Unauthenticated')
-#
-#         try:
-#             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-#         except jwt.ExpiredSignatureError:
-#             raise AuthenticationFailed('Unauthenticated')
-#
-#         if payload['id'] != user_id:
-#             raise AuthenticationFailed('Invalid user')
-#
-#         user_profile = UserProfile.objects.get(user_id=user_id)
-#         user_profile.phone = request.data.get('phone')
-#         user_profile.address = request.data.get('address')
-#         user_profile.save()
-#
-#         return redirect(f'/profile/{user_id}/')
-#
+class UserProfileView(APIView):
+    def get(self, request, user_id):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated')
+        except jwt.InvalidTokenError:
+            raise AuthenticationFailed('Invalid token')
+
+        if payload['id'] != user_id:
+            raise AuthenticationFailed('Invalid user')
+
+        user = User.objects.get(id=user_id)
+        user_profile = UserProfile.objects.get(user=user)
+
+        # Передача данных в шаблон
+        context = {
+            'user': user,
+            'user_profile': user_profile
+        }
+        return render(request, 'profile.html', context)
+
+    def post(self, request, user_id):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated')
+
+        if payload['id'] != user_id:
+            raise AuthenticationFailed('Invalid user')
+
+        user_profile = UserProfile.objects.get(user_id=user_id)
+        user_profile.phone = request.data.get('phone')
+        user_profile.address = request.data.get('address')
+        user_profile.save()
+
+        return redirect(f'/profile/{user_id}/')
+
