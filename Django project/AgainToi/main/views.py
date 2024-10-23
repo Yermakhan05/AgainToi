@@ -1,15 +1,49 @@
-from django.shortcuts import render
+from django.views.generic import ListView
+
 from company.models import CompanyProfile
+from main.models import SearchHistory, EventType
 from show.models import ShowProfile
 
-
-def search_places(request):
-    query = request.GET.get('q')
-    venues = CompanyProfile.objects.filter(company_name__icontains=query) if query else CompanyProfile.objects.none()
-    return render(request, 'search_places.html', {'venues': venues, 'query': query})
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-def search_shows(request):
-    query = request.GET.get('q')
-    shows = ShowProfile.objects.filter(show_name__icontains=query) if query else ShowProfile.objects.none()
-    return render(request, 'search_shows.html', {'shows': shows, 'query': query})
+class SearchPlacesView(LoginRequiredMixin, ListView):
+    model = CompanyProfile
+    template_name = 'list/search_places.html'
+    context_object_name = 'venues'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            SearchHistory.objects.create(user=self.request.user, search_query=query)
+            return CompanyProfile.objects.filter(company_name__icontains=query)
+        return CompanyProfile.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '')
+        return context
+
+
+class SearchShowsView(LoginRequiredMixin, ListView):
+    model = ShowProfile
+    template_name = 'list/search_shows.html'
+    context_object_name = 'shows'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            SearchHistory.objects.create(user=self.request.user, search_query=query)
+            return ShowProfile.objects.filter(show_name__icontains=query)
+        return ShowProfile.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '')
+        return context
+
+
+class EventTypeListView(ListView):
+    model = EventType
+    template_name = 'list/event_types.html'
+    context_object_name = 'event_types'
