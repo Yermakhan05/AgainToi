@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'user_profile.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Register User Profile</h1>
+        <form method="post" enctype="multipart/form-data" action="{% url 'user_register' %}">
+            {% csrf_token %}
+            <label for="company_name">Phone number:</label>
+            <input type="text" name="phone" required>
+            <label for="image">User Image:</label>
+            <input type="file" name="image" accept="image/*" required>
+            <label for="address">Address:</label>
+            <select name="address" required>
+                <option value="">Select Address</option>
+                {% for address in addresses %}
+                    <option value="{{ address.id }}">{{ address }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>

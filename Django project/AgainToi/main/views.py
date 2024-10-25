@@ -7,7 +7,7 @@ from show.models import ShowProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class SearchPlacesView(LoginRequiredMixin, ListView):
+class SearchPlacesView(ListView):
     model = CompanyProfile
     template_name = 'list/search_places.html'
     context_object_name = 'venues'
@@ -15,9 +15,10 @@ class SearchPlacesView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            SearchHistory.objects.create(user=self.request.user, search_query=query)
+            if self.request.user.is_authenticated:
+                SearchHistory.objects.create(user=self.request.user, search_query=query)
             return CompanyProfile.objects.filter(company_name__icontains=query)
-        return CompanyProfile.objects.none()
+        return CompanyProfile.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -25,7 +26,7 @@ class SearchPlacesView(LoginRequiredMixin, ListView):
         return context
 
 
-class SearchShowsView(LoginRequiredMixin, ListView):
+class SearchShowsView(ListView):
     model = ShowProfile
     template_name = 'list/search_shows.html'
     context_object_name = 'shows'
@@ -33,9 +34,10 @@ class SearchShowsView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            SearchHistory.objects.create(user=self.request.user, search_query=query)
+            if self.request.user.is_authenticated:
+                SearchHistory.objects.create(user=self.request.user, search_query=query)
             return ShowProfile.objects.filter(show_name__icontains=query)
-        return ShowProfile.objects.none()
+        return ShowProfile.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

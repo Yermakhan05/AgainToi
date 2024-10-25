@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+</head>
+<body>
+    <div class="header-profile">
+        <a href="{% url 'about' %}"><-</a>
+        <img src="{{ company_profile.image.url }}" alt="profile" class="profile-image">
+        <video controls>
+            <source src="{{ company_profile.video.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <h1>User Details</h1>
+    </div>
+    <div class="profile-detail">
+        <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+
+    <div class="profile-detail">
+        <p><strong>Username:</strong> {{ user.name }}</p>
+    </div>
+    <h1>Company Profile</h1>
+    <h2>{{ company_profile.company_name }}</h2>
+
+    <div class="profile-detail">
+        <p><strong>Address:</strong> {{ company_profile.address }}</p>
+    </div>
+
+    <div class="profile-detail">
+        <p><strong>Capacity:</strong> {{ company_profile.capacity }}</p>
+    </div>
+
+    <div class="profile-detail">
+        <p><strong>Venue Type:</strong> {{ company_profile.get_venue_type_display }}</p>
+    </div>
+
+</body>
+</html>

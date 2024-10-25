@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Register Your Company</h1>
+        <form method="post" enctype="multipart/form-data" action="{% url 'venue_register' %}">
+            {% csrf_token %}
+            <label for="company_name">Company Name:</label>
+            <input type="text" name="company_name" required>
+
+            <label for="address">Address:</label>
+            <select name="address" required>
+                <option value="">Select Address</option>
+                {% for address in addresses %}
+                    <option value="{{ address.id }}">{{ address }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="capacity">Capacity:</label>
+            <input type="number" name="capacity" min="1" max="1000" required>
+
+            <label for="venue_type">Venue Type:</label>
+            <select name="venue_type" required>
+                <option value="">Select Venue Type</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="cafe">Cafe</option>
+                <option value="hall">Hall</option>
+                <option value="club">Club</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="image">Company Image:</label>
+            <input type="file" name="image" accept="image/*" required>
+
+            <label for="video">Company Video:</label>
+            <input type="file" name="video" accept="video/*" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>

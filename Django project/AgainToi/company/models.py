@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
-from users.models import UserOrder
+from django.conf import settings
+from user.models import UserOrder, Address
 
 
 class CompanyProfile(models.Model):
@@ -12,11 +12,14 @@ class CompanyProfile(models.Model):
         ('other', 'Other'),
     ]
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     company_name = models.CharField(max_length=100)
-    location = models.CharField(max_length=255)
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True)
     capacity = models.IntegerField()
     venue_type = models.CharField(max_length=50, choices=VENUE_TYPES)
+
+    image = models.ImageField(upload_to='company/profile_images/', blank=True, null=True)
+    video = models.FileField(upload_to='company/videos/', blank=True, null=True)
 
 
 class CompanyCalendar(models.Model):

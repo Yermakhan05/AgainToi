@@ -5,7 +5,7 @@ from company.models import CompanyProfile, CompanyOrderAcceptance, CompanyCalend
 
 @admin.register(CompanyProfile)
 class CompanyProfileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'company_name', 'location', 'capacity', 'venue_type')
+    list_display = ('id', 'user', 'company_name', 'address', 'capacity', 'venue_type')
     search_fields = ('user',)
 
 

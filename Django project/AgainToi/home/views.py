@@ -55,3 +55,4 @@ def add_media(request):
     else:
         form = MediaForm()
     return render(request, 'media/media-add.html', {'form': form})
+

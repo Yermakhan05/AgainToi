@@ -34,8 +34,18 @@ class SingerAdmin(admin.ModelAdmin):
 
 @admin.register(ShowProfile)
 class ShowProfileAdmin(admin.ModelAdmin):
-    list_display = ('show_name', 'user', 'host', 'photographer', 'camera_operator', 'dancer', 'singer')
-    search_fields = ('show_name', 'user__username')
+    list_display = ('show_name', 'user', 'host', 'get_dancers', 'get_singers')
+    search_fields = ('show_name',)
+    list_filter = ('host',)
+    filter_horizontal = ('dancer', 'singer')
+
+    def get_dancers(self, obj):
+        return ", ".join([d.name for d in obj.dancer.all()])
+    get_dancers.short_description = 'Dancers'
+
+    def get_singers(self, obj):
+        return ", ".join([s.name for s in obj.singer.all()])
+    get_singers.short_description = 'Singers'
 
 
 @admin.register(ShowOrderAcceptance)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from .views import *
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('media/', media_list, name='media'),
     path('media-add/', add_media, name='add-media'),
     path('media/<int:pk>/', media_detail, name='media-detail'),
+
 ]

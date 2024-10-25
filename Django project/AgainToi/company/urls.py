@@ -1,7 +1,8 @@
 from django.urls import path
-from . import views
+from .views import CompanyRegister, CompanyProfileView, Order
 
 urlpatterns = [
-    path('calendar/add-event/', views.add_event, name='add-event'),
-    path('calendar/', views.view_calendar, name='view-calendar'),
+    path('register/', CompanyRegister, name='venue_register'),
+    path('profile/', CompanyProfileView, name='venue_profile'),
+    path('order/', Order, name='order'),
 ]
