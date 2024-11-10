@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from user.models import UserProfile, UserOrder, Address
+from user.models import UserProfile, UserOrder, Address, City, Region
 from .models import User
 
 
@@ -24,5 +24,17 @@ class UserOrderAdmin(admin.ModelAdmin):
 
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ('id', 'district_address', 'city')
+    list_display = ('id', 'region', 'city', 'map_link')
     search_fields = ('city',)
+
+
+@admin.register(City)
+class CityAdmin(admin.ModelAdmin):
+    list_display = ('id', 'region', 'name', 'map_link')
+    search_fields = ('name',)
+
+
+@admin.register(Region)
+class RegionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'map_link')
+    search_fields = ('name',)

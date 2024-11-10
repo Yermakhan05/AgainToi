@@ -2,12 +2,15 @@ from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
-from .serializers import UserSerializer
-from .models import User, UserProfile, Address
+
+from .form import AddressForm
+from .serializers import UserSerializer, AddressSerializer
+from .models import User, UserProfile, Address, City
 import jwt, datetime
 from django.contrib.auth import login as auth_login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 
 class RegisterView(APIView):
@@ -107,24 +110,34 @@ def UserProfileView(request):
 def UserProfileRegister(request):
     if UserProfile.objects.filter(user=request.user).exists():
         return redirect('about')
-    addresses = Address.objects.all()
 
     if request.method == 'POST':
-        phone = request.POST.get('phone')
-        address_id = request.POST.get('address')
-        image = request.FILES.get('image')
+        addressForm = AddressForm(request.POST, request.FILES)
 
-        address = Address.objects.get(id=address_id)
+        if addressForm.is_valid():
+            address = addressForm.save()
 
-        UserProfile.objects.create(
-            user=request.user,
-            address=address,
-            phone=phone,
-            image=image,
-        )
-        return redirect('about')
+            phone = request.POST.get('phone')
+            image = request.FILES.get('image')
 
-    return render(request, 'userProfile_register.html', {'addresses': addresses})
+            UserProfile.objects.create(
+                user=request.user,
+                address=address,
+                phone=phone,
+                image=image,
+            )
+
+            return redirect('about')
+
+    else:
+        addressForm = AddressForm()
+
+    return render(request, 'userProfile_register.html', {'addressForm': addressForm})
+
+
+def get_cities(request, region_id):
+    cities = City.objects.filter(region_id=region_id).values('id', 'name')
+    return JsonResponse(list(cities), safe=False)
 
 
 def Cart(request):

@@ -19,12 +19,15 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from user.views import get_cities
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('main/', include('main.urls')),
     path('user/', include('user.urls')),
-    path('company/', include('company.urls'))
+    path('company/', include('company.urls')),
+    path('cities/<int:region_id>/', get_cities, name='get_cities'),
 ]
 
 if settings.DEBUG:

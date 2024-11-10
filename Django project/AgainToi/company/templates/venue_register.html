@@ -14,13 +14,11 @@
             <label for="company_name">Company Name:</label>
             <input type="text" name="company_name" required>
 
-            <label for="address">Address:</label>
-            <select name="address" required>
-                <option value="">Select Address</option>
-                {% for address in addresses %}
-                    <option value="{{ address.id }}">{{ address }}</option>
-                {% endfor %}
-            </select>
+            <label for="region">Region:</label>
+            {{ addressForm.region }}
+
+            <label for="city">City:</label>
+            {{ addressForm.city }}
 
             <label for="capacity">Capacity:</label>
             <input type="number" name="capacity" min="1" max="1000" required>
@@ -36,13 +34,40 @@
             </select>
 
             <label for="image">Company Image:</label>
-            <input type="file" name="image" accept="image/*" required>
+            <input type="file" name="image" accept="image/*">
 
             <label for="video">Company Video:</label>
-            <input type="file" name="video" accept="video/*" required>
+            <input type="file" name="video" accept="video/*">
 
             <button type="submit">Register</button>
         </form>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const regionSelect = document.querySelector("select[name='region']");
+                const citySelect = document.querySelector("select[name='city']");
+
+                regionSelect.addEventListener("change", function () {
+                    const regionId = this.value;
+
+                    // Clear existing city options
+                    citySelect.innerHTML = '<option value="">Select city</option>';
+
+                    if (regionId) {
+                        fetch(`/cities/${regionId}/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                data.forEach(city => {
+                                    const option = document.createElement("option");
+                                    option.value = city.id;
+                                    option.text = city.name;
+                                    citySelect.add(option);
+                                });
+                            })
+                            .catch(error => console.error("Error fetching cities:", error));
+                    }
+                });
+            });
+        </script>
     </div>
 </body>
 </html>

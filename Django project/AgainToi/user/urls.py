@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, LoginView, UserView, LogoutView, UserProfileView, UserProfileRegister, Cart
+from .views import RegisterView, LoginView, UserView, LogoutView, UserProfileView, UserProfileRegister, Cart, get_cities
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -8,5 +8,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', UserProfileRegister, name='user_register'),
     path('user_profile/', UserProfileView, name='user_profile'),
-    path('cart/', Cart, name='cart')
+    path('cart/', Cart, name='cart'),
 ]

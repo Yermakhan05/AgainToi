@@ -57,7 +57,7 @@ class ShowProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     show_name = models.CharField(max_length=100)
 
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True)
+    address = models.OneToOneField(Address, on_delete=models.SET_NULL, null=True, blank=True)
 
     host = models.ForeignKey(Host, on_delete=models.SET_NULL, null=True, blank=True)
     photographer = models.ForeignKey(Photographer, on_delete=models.SET_NULL, null=True, blank=True)

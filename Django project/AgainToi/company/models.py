@@ -14,11 +14,11 @@ class CompanyProfile(models.Model):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     company_name = models.CharField(max_length=100)
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True)
+    address = models.OneToOneField(Address, on_delete=models.SET_NULL, null=True, blank=True)
     capacity = models.IntegerField()
     venue_type = models.CharField(max_length=50, choices=VENUE_TYPES)
 
-    image = models.ImageField(upload_to='company/profile_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='company/profile_images/', blank=True, null=True, default='profile_images/profile.jpeg')
     video = models.FileField(upload_to='company/videos/', blank=True, null=True)
 
 

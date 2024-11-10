@@ -10,7 +10,11 @@
 <body>
     <div class="header-profile">
         <a href="{% url 'about' %}"><-</a>
-        <img src="{{ user_profile.image.url }}" alt="profile" class="profile-image">
+        {% if user_profile.image %}
+            <img class="profile-image" src="{{ user_profile.image.url }}" alt="User Image">
+        {% else %}
+            <img class="profile-image" src="../../media/profile_images/profile.jpeg" alt="Default User Image">
+        {% endif %}
         <h1>User Profile</h1>
     </div>
     <div class="profile-detail">

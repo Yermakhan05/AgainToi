@@ -33,3 +33,4 @@ class ShowCompanyRegistrationForm(UserCreationForm):
                 singer=self.cleaned_data['singer']
             )
         return user
+
