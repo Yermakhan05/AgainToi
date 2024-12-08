@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
+from company.models import CompanyProfile
 
 from home.forms import ContactForm, MediaForm
 from home.models import Media
@@ -56,3 +57,21 @@ def add_media(request):
         form = MediaForm()
     return render(request, 'media/media-add.html', {'form': form})
 
+import json
+def top_companies(request):
+    companies = CompanyProfile.objects.all().order_by('-capacity')[:5]
+
+    company_names = [company.company_name for company in companies]
+    capacities = [company.capacity for company in companies]
+    venue_types = CompanyProfile.objects.values_list('venue_type', flat=True)
+
+    venue_type_counts = {}
+    for vt in venue_types:
+        venue_type_counts[vt] = venue_type_counts.get(vt, 0) + 1
+
+    return render(request, 'about/top-list.html', {
+        'companies': companies,
+        'company_names': json.dumps(company_names),
+        'capacities': json.dumps(capacities),
+        'venue_type_counts': json.dumps(venue_type_counts),
+    })
