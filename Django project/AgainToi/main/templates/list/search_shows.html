@@ -1,0 +1,105 @@
+{% extends 'home/base.html' %}
+{% block content %}
+    <style>
+        /* Body styling */
+        .search-page {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        /* Heading styling */
+        .search-title {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Form styling */
+        .search-form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .search-button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* List styling */
+        .venue-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .venue-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .venue-type {
+            margin: 0 0 5px 0;
+            color: #555;
+        }
+
+        .venue-details {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .search-input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <body class="search-page">
+        <h2 class="search-title">Search Results for Venues</h2>
+        <form class="search-form" method="GET">
+            <input type="text" class="search-input" name="q" value="{{ query }}" placeholder="Search for venues...">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+
+        <ul class="venue-list">
+            {% for s in shows %}
+                <li class="venue-item">
+                    <h3 class="venue-type">{{ s.show_name }}</h3>
+                    <p class="venue-details">
+                        Shows has - singers {{ s.singer }}, dancers {{ s.dancer }}, host - {{ s.host }}
+                    </p>
+                </li>
+            {% empty %}
+                <li class="venue-item">No venues found.</li>
+            {% endfor %}
+        </ul>
+    </body>
+{% endblock %}

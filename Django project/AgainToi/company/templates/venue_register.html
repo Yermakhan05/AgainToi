@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Your Company</title>
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            height: 100%;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #0062cc;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 16px;
+            color: #343a40;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border: 2px solid #ced4da;
+            border-radius: 4px;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        input[type="file"] {
+            padding: 0;
+        }
+
+        input:focus, select:focus {
+            border-color: #28a745;
+            outline: none;
+        }
+
+        button {
+            background-color: #0062cc;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #004bb5;
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+        }
+
+        .form-section select {
+            width: 100%;
+        }
+
+        .form-section input[type="file"] {
+            padding: 6px;
+        }
+
+        .form-section .form-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .form-section .form-row > div {
+            flex: 1;
+        }
+
+        .form-section .form-row > div:nth-child(2) {
+            flex: 2;
+        }
+
+        .back-btn {
+            display: inline-block;
+            color: #0062cc;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .back-btn:hover {
+            color: #004bb5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .form-section .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'about' %}" class="back-btn">&larr; Back</a>
+        <h1>Register Your Company</h1>
+        <form method="post" enctype="multipart/form-data" action="{% url 'venue_register' %}">
+            {% csrf_token %}
+
+            <div class="form-section">
+                <label for="company_name">Company Name:</label>
+                <input type="text" name="company_name" required>
+            </div>
+
+            <div class="form-section">
+                <label for="region">Region:</label>
+                {{ addressForm.region }}
+            </div>
+
+            <div class="form-section">
+                <label for="city">City:</label>
+                {{ addressForm.city }}
+            </div>
+
+            <div class="form-section form-row">
+                <div>
+                    <label for="capacity">Capacity:</label>
+                    <input type="number" name="capacity" min="1" max="1000" required>
+                </div>
+
+                <div>
+                    <label for="venue_type">Venue Type:</label>
+                    <select name="venue_type" required>
+                        <option value="">Select Venue Type</option>
+                        <option value="restaurant">Restaurant</option>
+                        <option value="cafe">Cafe</option>
+                        <option value="hall">Hall</option>
+                        <option value="club">Club</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <label for="image">Company Image:</label>
+                <input type="file" name="image" accept="image/*">
+            </div>
+
+            <div class="form-section">
+                <label for="video">Company Video:</label>
+                <input type="file" name="video" accept="video/*">
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const regionSelect = document.querySelector("select[name='region']");
+            const citySelect = document.querySelector("select[name='city']");
+
+            regionSelect.addEventListener("change", function () {
+                const regionId = this.value;
+
+                // Clear existing city options
+                citySelect.innerHTML = '<option value="">Select city</option>';
+
+                if (regionId) {
+                    fetch(`/cities/${regionId}/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(city => {
+                                const option = document.createElement("option");
+                                option.value = city.id;
+                                option.text = city.name;
+                                citySelect.add(option);
+                            });
+                        })
+                        .catch(error => console.error("Error fetching cities:", error));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

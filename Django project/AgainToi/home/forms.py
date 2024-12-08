@@ -21,6 +21,7 @@ class ContactForm(forms.ModelForm):
         self.fields['subject'].widget.attrs.update({'placeholder': 'Enter subject'})
         self.fields['message'].widget.attrs.update({'placeholder': 'Enter Your Message'})
 
+
 class MediaForm(forms.ModelForm):
     class Meta:
         model = Media

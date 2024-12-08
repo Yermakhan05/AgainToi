@@ -22,11 +22,11 @@
 
             <div class="media-img-video">
                 {% if media.photo %}
-                    <img src="{{ media.photo.url }}" alt="Media Photo" width="390" class="media-detail-image">
+                    <img src="{{ media.photo.url }}" alt="Media Photo" width="390" height="500" class="media-detail-image">
                 {% endif %}
 
                 {% if media.video %}
-                    <video width="930" controls class="media-detail-video">
+                    <video width="930" height="500" controls class="media-detail-video">
                         <source src="{{ media.video.url }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>

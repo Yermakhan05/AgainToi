@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
+from company.models import CompanyProfile
 
 from home.forms import ContactForm, MediaForm
 from home.models import Media
@@ -11,44 +12,66 @@ from home.models import Media
 def about(request):
     return render(request, "about/about.html")
 
+
 def media(request):
     return render(request, "media/media.html")
+
 
 def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()  # Save form data to the database
-            return redirect('thanks')  # Redirect to the thank-you page
+            form.save()
+            return redirect('thanks')
     else:
         form = ContactForm()
 
     return render(request, 'contact/contact.html', {'form': form})
 
+
 def thanks_view(request):
     return render(request, 'contact/thanks.html')
 
 
-#media
+# media
 def media_list(request):
     medias = Media.objects.all().order_by('-created_at')
     return render(request, 'media/media.html', {'medias': medias})
 
-def media_detail(request, pk):
-    media = get_object_or_404(Media, pk=pk)
-    return render(request, 'media/media-detail.html', {'media': media})
 
-# @login_required
+def media_detail(request, pk):
+    media_ = get_object_or_404(Media, pk=pk)
+    return render(request, 'media/media-detail.html', {'media': media_})
+
+
+@login_required
 def add_media(request):
     if request.method == 'POST':
         form = MediaForm(request.POST, request.FILES)
         if form.is_valid():
-            media = form.save(commit=False)
-            bereket_user = User.objects.get(username='bereket')
-            media.user = bereket_user
-
-            media.save()
+            media_ = form.save(commit=False)
+            media_.user = request.user
+            media_.save()
             return redirect('media')
     else:
         form = MediaForm()
     return render(request, 'media/media-add.html', {'form': form})
+
+import json
+def top_companies(request):
+    companies = CompanyProfile.objects.all().order_by('-capacity')[:5]
+
+    company_names = [company.company_name for company in companies]
+    capacities = [company.capacity for company in companies]
+    venue_types = CompanyProfile.objects.values_list('venue_type', flat=True)
+
+    venue_type_counts = {}
+    for vt in venue_types:
+        venue_type_counts[vt] = venue_type_counts.get(vt, 0) + 1
+
+    return render(request, 'about/top-list.html', {
+        'companies': companies,
+        'company_names': json.dumps(company_names),
+        'capacities': json.dumps(capacities),
+        'venue_type_counts': json.dumps(venue_type_counts),
+    })
