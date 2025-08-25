@@ -10,5 +10,5 @@ urlpatterns = [
     path('media/', media_list, name='media'),
     path('media-add/', add_media, name='add-media'),
     path('media/<int:pk>/', media_detail, name='media-detail'),
-
+    path('top-list/', top_companies, name='top-list'),
 ]
